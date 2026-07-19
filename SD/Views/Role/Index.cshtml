@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SD.Models.Role>
+
+@{
+    ViewData["Title"] = "Roles Directory";
+}
+
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2>System Roles</h2>
+    <a asp-action="Create" class="btn btn-success">Create New Role</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>SN.</th>
+            <th>Role Name</th>
+            <th>Description</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted">No roles defined yet.</td>
+            </tr>
+        }
+        else
+        {
+            @* Initialize the serial number counter here *@
+            int serialNumber = 1;
+
+            @foreach (var role in Model)
+            {
+                <tr>
+                    @* Display and increment the serial number *@
+                    <td>@(serialNumber++)</td>
+
+                    <td><strong>@role.Name</strong></td>
+                    <td>@role.Description</td>
+                    @* <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td> *@
+                    <td class="text-center">
+                        <!-- NEW ACTION BUTTON TO CONTROL PERMISSIONS DYNAMICALLY -->
+                        <a asp-controller="RolePermission" asp-action="Manage" asp-route-id="@role.Id" class="btn btn-sm btn-warning me-2 text-white fw-bold">Permissions</a>
+
+                        <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

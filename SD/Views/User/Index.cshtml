@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SD.Models.User>
+
+@{
+    ViewData["Title"] = "User Directory";
+}
+
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2>User Accounts</h2>
+    @* <a asp-action="Create" class="btn btn-success">Add New User</a> *@
+    @* Check if the logged-in user possesses the specific database claim string *@
+    @if (User.HasClaim("Permission", "User.Create"))
+    {
+        <a asp-action="Create" class="btn btn-success">Add New User</a>
+    }
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            @* <th>ID</th> *@
+            <th>S.N</th>
+            <th>Email Address</th>
+            <th>Created Date</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted">No users found in the system.</td>
+            </tr>
+        }
+        else
+        {
+            int serialNumber = 1;
+            @foreach (var user in Model)
+            {
+                <tr>
+                    @* <td>@user.Id</td> *@
+                    <td>@(serialNumber++)</td>
+                    <td>@user.Email</td>
+                    <td>@user.CreatedAt.ToString("g")</td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

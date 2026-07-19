@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SD.Models.Permission>
+
+@{
+    ViewData["Title"] = "Manage Role Permissions";
+    var assignedIds = ViewBag.AssignedPermissionIds as List<int> ?? new List<int>();
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 border rounded p-4 shadow-sm bg-light">
+        <h3 class="mb-2">Permissions Configuration</h3>
+        <p class="text-muted">Configuring rules for role: <strong class="text-primary">@ViewBag.RoleName</strong></p>
+        <hr />
+
+        <form asp-action="Manage" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="roleId" value="@ViewBag.RoleId" />
+
+            <div class="mb-4">
+                <label class="form-label d-block fw-bold mb-3">Select Active App Permissions:</label>
+
+                @foreach (var permission in Model)
+                {
+                    <div class="form-check mb-2 p-2 border-bottom d-flex align-items-center">
+                        <input class="form-check-input ms-1" type="checkbox" name="selectedPermissionIds"
+                               value="@permission.Id" id="p_@permission.Id"
+                        @(assignedIds.Contains(permission.Id) ? "checked" : "") />
+                        <label class="form-check-label ms-3" for="p_@permission.Id">
+                            <code class="text-danger border bg-white px-2 py-1 rounded me-2 font-monospace">@permission.Name</code>
+                            <span class="text-muted small">- @permission.Description</span>
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Role" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary shadow-sm">Save Permissions Matrix</button>
+            </div>
+        </form>
+    </div>
+</div>

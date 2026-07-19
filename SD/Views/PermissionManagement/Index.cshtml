@@ -1,0 +1,104 @@
+﻿@model IEnumerable<SD.Models.Permission>
+
+@{
+    ViewData["Title"] = "System Permissions Registry";
+}
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Permissions Master Registry</h2>
+
+        <form asp-action="QuickSeed" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-warning fw-bold text-white shadow-sm">
+                ⚡ Run Quick Seed SQL Logic
+            </button>
+        </form>
+    </div>
+
+    <div class="row g-4">
+        @* Left Side: Create Custom Entry Box Form *@
+        <div class="col-md-4">
+            <div class="card shadow-sm border p-4 bg-light">
+                <h4 class="mb-3">Create New Tag</h4>
+                <form asp-action="CreateCustom" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">Permission Name String</label>
+                        <input name="name" type="text" class="form-control" placeholder="e.g., User.Create, Role.View" required />
+                        <small class="text-muted d-block mt-1">Must match policy declaration handles exactly.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">Functional Description</label>
+                        <textarea name="description" class="form-control" rows="3" placeholder="Provide a summary of what this allows..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 mt-2">Save Permission Entry</button>
+                </form>
+            </div>
+        </div>
+
+        @* Right Side: Active Tables Status List with Action Buttons *@
+        <div class="col-md-8">
+            <div class="card shadow-sm border p-3">
+                <h4 class="mb-3">Active Registered System Permissions</h4>
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 10%;">ID</th>
+                            <th style="width: 30%;">Permission Tag String</th>
+                            <th style="width: 40%;">Operational Description</th>
+                            <th style="width: 20%;" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No security permission tags mapped inside database. Click 'Run Quick Seed' to start.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td><code class="fs-6 bg-light text-danger border px-2 py-1 rounded font-monospace">@item.Name</code></td>
+                                    <td class="text-muted">@item.Description</td>
+                                    <td class="text-center">
+                                        <!-- Inline Edit Button trigger link -->
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary me-1">Edit</a>
+
+                                        <!-- Inline Delete form execution button -->
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this permission? This will clear any role links.');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
