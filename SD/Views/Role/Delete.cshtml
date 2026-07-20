@@ -1,0 +1,32 @@
+﻿@model SD.Models.Role
+
+@{
+    ViewData["Title"] = "Confirm Role Deletion";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 border border-danger rounded p-4 shadow-sm bg-white">
+        <h3 class="text-danger mb-3">Delete Role?</h3>
+        <p class="lead text-muted">Are you absolutely sure you want to completely remove this role? This action cannot be reversed.</p>
+
+        <hr />
+
+        <dl class="row my-4">
+            <dt class="col-sm-4 font-weight-bold">Role Name:</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Description:</dt>
+            <dd class="col-sm-8">@Model.Description</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">No, Go Back</a>
+                <button type="submit" class="btn btn-danger">Yes, Delete Role</button>
+            </div>
+        </form>
+    </div>
+</div>

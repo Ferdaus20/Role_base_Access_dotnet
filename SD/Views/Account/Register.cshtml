@@ -1,0 +1,33 @@
+﻿@model SD.Models.User
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 border rounded p-4 shadow-sm bg-light">
+        <h3 class="mb-4 text-center">Registration Sign Up</h3>
+
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email" class="form-control" type="email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input name="plainPassword" type="password" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 mt-2">Sign Up Account</button>
+
+            <div class="text-center mt-3">
+                <a asp-action="Login" class="text-decoration-none">Already have an account? Sign In</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Authentication Portal";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 border rounded p-4 shadow-sm bg-light">
+        <h3 class="mb-4 text-center">Sign In Portal</h3>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input name="email" type="email" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-2">Log In</button>
+
+            <div class="text-center mt-3">
+                <a asp-action="Register" class="text-decoration-none">Need an account? Sign Up</a>
+            </div>
+        </form>
+    </div>
+</div>

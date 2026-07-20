@@ -1,0 +1,35 @@
+﻿@model SD.Models.User
+
+@{
+    ViewData["Title"] = "Modify Account";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 border rounded p-4 shadow-sm bg-light">
+        <h3 class="mb-4">Edit User Account</h3>
+
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Hidden field is essential to carry the existing ID back to the server -->
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">New Password (Optional)</label>
+                <input name="newPassword" type="password" class="form-control" />
+                <small class="text-muted">Leave empty if you do not want to alter the current password.</small>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
